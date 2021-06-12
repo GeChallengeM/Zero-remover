@@ -24,10 +24,15 @@
  */
 package com.zeroremover;
 
+import com.google.inject.Inject;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.ChatMessageType;
+import net.runelite.api.Client;
 import net.runelite.api.MessageNode;
 import net.runelite.api.events.ChatMessage;
+import net.runelite.api.events.GameTick;
+import net.runelite.api.events.WidgetLoaded;
+import net.runelite.api.widgets.Widget;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
@@ -41,7 +46,11 @@ import net.runelite.client.plugins.PluginDescriptor;
 @Slf4j
 public class ZeroRemoverPlugin extends Plugin
 {
+	@Inject
+	private Client client;
+
 	private boolean ShouldReplace = false;
+	private boolean ReplaceNow = false;
 
 	@Override
 	public void startUp()
@@ -53,6 +62,50 @@ public class ZeroRemoverPlugin extends Plugin
 	protected void shutDown()
 	{
 		ShouldReplace = false;
+	}
+
+	@Subscribe
+	public void onWidgetLoaded(WidgetLoaded event)
+	{
+		ReplaceNow = true;
+	}
+
+	@Subscribe
+	public void onGameTick(GameTick event)
+	{
+		if (ReplaceNow)
+		{
+			if (client.isResized())
+			{
+				ReplaceWText(new Widget[]{client.getWidget(10551311)});
+			}
+			else
+			{
+				ReplaceWText(new Widget[]{client.getWidget(35913751)});
+			}
+			ReplaceNow = false;
+		}
+	}
+
+	public void ReplaceWText(Widget[] parent)
+	{
+		if (parent == null)
+		{
+			return;
+		}
+		for (Widget w : parent)
+		{
+			if (w != null)
+			{
+				final String message = w.getText();
+				if (message != null) {
+					String replacement = message.replaceAll("([0-9]*?:*)([0-9]{1,2})\\.([0-9])0", "$1$2.$3");
+					w.setText(replacement);
+				}
+				ReplaceWText(w.getNestedChildren());
+				ReplaceWText(w.getStaticChildren());
+			}
+		}
 	}
 
 	@Subscribe
