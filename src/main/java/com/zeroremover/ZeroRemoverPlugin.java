@@ -53,7 +53,7 @@ public class ZeroRemoverPlugin extends Plugin
 	private boolean ReplaceNow = false;
 
 	@Override
-	public void startUp()
+	protected void startUp()
 	{
 		ShouldReplace = true;
 	}
@@ -73,7 +73,7 @@ public class ZeroRemoverPlugin extends Plugin
 	@Subscribe
 	public void onGameTick(GameTick event)
 	{
-		if (ReplaceNow)
+		if (ShouldReplace && ReplaceNow)
 		{
 			if (client.isResized())
 			{
@@ -87,7 +87,7 @@ public class ZeroRemoverPlugin extends Plugin
 		}
 	}
 
-	public void ReplaceWText(Widget[] parent)
+	private void ReplaceWText(Widget[] parent)
 	{
 		if (parent == null)
 		{
