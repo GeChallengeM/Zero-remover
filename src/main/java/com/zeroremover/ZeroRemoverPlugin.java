@@ -77,12 +77,12 @@ public class ZeroRemoverPlugin extends Plugin
 		{
 			if (client.isResized())
 			{
-				ReplaceWText(new Widget[]{client.getWidget(10551311)}); //Classic
-				ReplaceWText(new Widget[]{client.getWidget(10747919)}); //Modern
+				ReplaceWText(new Widget[]{client.getWidget(10551316)}); //Classic
+				ReplaceWText(new Widget[]{client.getWidget(10747924)}); //Modern
 			}
 			else
 			{
-				ReplaceWText(new Widget[]{client.getWidget(35913751)});
+				ReplaceWText(new Widget[]{client.getWidget(35913756)});
 			}
 			ReplaceNow = false;
 		}
