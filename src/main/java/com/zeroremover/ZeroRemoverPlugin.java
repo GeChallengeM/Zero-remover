@@ -116,7 +116,8 @@ public class ZeroRemoverPlugin extends Plugin
 		{
 			return;
 		}
-		if (chatMessage.getType() == ChatMessageType.GAMEMESSAGE)
+		ChatMessageType chatMessageType = chatMessage.getType();
+		if (chatMessageType == ChatMessageType.GAMEMESSAGE || chatMessageType == ChatMessageType.FRIENDSCHATNOTIFICATION)
 		{
 			MessageNode messageNode = chatMessage.getMessageNode();
 			final String message = messageNode.getValue();
